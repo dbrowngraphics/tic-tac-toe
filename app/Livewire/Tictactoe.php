@@ -34,7 +34,7 @@ class Tictactoe extends Component
         return view('livewire.tictactoe');
     }
 
-    public function clickedCell($index) : void
+    public function clickedCell($index): void
     {
         if (!$this->isGameOver) {
 
@@ -53,16 +53,15 @@ class Tictactoe extends Component
                 $this->playCount++;
 
                 $this->history = array_splice($this->history, 0, $this->playCount);
-    
+
                 $this->isGameOver = $this->isWinner() || (9 == $this->playCount);
             }
         }
-        
     }
 
     public function isWinner()
     {
-        foreach(self::WINNING_CELLS as $winner) {
+        foreach (self::WINNING_CELLS as $winner) {
             list($a, $b, $c) = $winner;
             if (isset($this->board[$a]) && $this->board[$a] == $this->board[$b] && $this->board[$a] == $this->board[$c]) {
                 $this->winner = $this->board[$a];
@@ -83,10 +82,14 @@ class Tictactoe extends Component
     {
         $this->board = $this->history[$key]['board'];
         $this->playCount = $key + 1;
-        
+
         $this->marker = (($this->playCount % 2) == 0) ? 'X' : 'O';
 
         $this->isGameOver = $this->isWinner() || (9 == $this->playCount);
+
+        if (!$this->isGameOver) {
+            $this->reset('winner');
+        }
     }
 
     private function initBoard()
